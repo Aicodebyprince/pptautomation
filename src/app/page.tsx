@@ -1,82 +1,112 @@
 "use client";
 
-import { ProjectPreview } from "@/components/project-preview";
-import { StudioFlowSidebar } from "@/components/studio-flow-sidebar";
+import { useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Sidebar,
-  SidebarInset,
-  SidebarProvider,
-  SidebarRail,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
-import { useToast } from "@/hooks/use-toast";
-import { Code, Share2 } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { Loader2, Sparkles } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { generatePresentation } from "@/ai/flows/presentation-generator";
+
+interface Slide {
+  title: string;
+  content: string[];
+}
+
+interface Presentation {
+  title: string;
+  slides: Slide[];
+}
 
 export default function Home() {
-  const { toast } = useToast();
+  const [topic, setTopic] = useState("");
+  const [isPending, startTransition] = useTransition();
+  const [presentation, setPresentation] = useState<Presentation | null>(null);
+
+  const handleGenerate = () => {
+    if (!topic) return;
+    startTransition(async () => {
+      const result = await generatePresentation(topic);
+      setPresentation(result);
+    });
+  };
 
   return (
-    <SidebarProvider>
-      <Sidebar>
-        <StudioFlowSidebar />
-        <SidebarRail />
-      </Sidebar>
-      <SidebarInset>
-        <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background/95 px-4 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-background/60 sm:px-6">
-          <SidebarTrigger className="group -ml-2 flex h-8 w-8 items-center justify-center rounded-full bg-background transition-colors hover:bg-muted lg:hidden">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="h-5 w-5 text-foreground"
-            >
-              <rect width="18" height="18" x="3" y="3" rx="2" />
-              <path d="M9 3v18" />
-            </svg>
-            <span className="sr-only">Toggle Sidebar</span>
-          </SidebarTrigger>
-          <div className="flex-1">
-            <h1 className="text-lg font-semibold">Live Preview</h1>
+    <div className="flex flex-col min-h-screen bg-background">
+      <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background/95 px-4 shadow-sm backdrop-blur sm:px-6">
+        <h1 className="text-lg font-semibold">AI Presentation Generator</h1>
+      </header>
+
+      <main className="flex-1 p-4 md:p-6">
+        <div className="mx-auto max-w-3xl space-y-8">
+          <div className="space-y-4">
+            <h2 className="text-2xl font-bold tracking-tight">
+              Create a presentation
+            </h2>
+            <p className="text-muted-foreground">
+              Enter a topic, and AI will generate a presentation for you.
+            </p>
+            <div className="space-y-2">
+              <Textarea
+                placeholder="e.g., 'The Future of Renewable Energy'"
+                value={topic}
+                onChange={(e) => setTopic(e.target.value)}
+                rows={3}
+              />
+              <Button
+                onClick={handleGenerate}
+                disabled={isPending || !topic}
+                className="w-full sm:w-auto"
+              >
+                {isPending ? (
+                  <Loader2 className="animate-spin" />
+                ) : (
+                  <Sparkles />
+                )}
+                <span>Generate Presentation</span>
+              </Button>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                toast({
-                  title: "Exporting Code",
-                  description:
-                    "This feature is coming soon! Stay tuned.",
-                });
-              }}
-            >
-              <Code />
-              <span>Export</span>
-            </Button>
-            <Button
-              size="sm"
-              onClick={() => {
-                navigator.clipboard.writeText(window.location.href);
-                toast({
-                  title: "Link Copied!",
-                  description: "You can now share your creation.",
-                });
-              }}
-            >
-              <Share2 />
-              <span>Share</span>
-            </Button>
-          </div>
-        </header>
-        <ProjectPreview />
-      </SidebarInset>
-    </SidebarProvider>
+
+          {isPending && (
+            <div className="flex justify-center">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+          )}
+
+          {presentation && (
+            <div className="space-y-6">
+              <h2 className="text-3xl font-bold text-center">
+                {presentation.title}
+              </h2>
+              <div className="space-y-4">
+                {presentation.slides.map((slide, index) => (
+                  <Card key={index}>
+                    <CardHeader>
+                      <CardTitle>
+                        Slide {index + 1}: {slide.title}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <ul className="list-disc space-y-2 pl-5">
+                        {slide.content.map((point, i) => (
+                          <li key={i}>{point}</li>
+                        ))}
+                      </ul>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </main>
+      <footer className="border-t bg-background">
+        <div className="container mx-auto flex h-14 items-center justify-center px-4 md:px-6">
+          <p className="text-sm text-muted-foreground">
+            © {new Date().getFullYear()} StudioFlow. All rights reserved.
+          </p>
+        </div>
+      </footer>
+    </div>
   );
 }
