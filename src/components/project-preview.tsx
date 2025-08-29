@@ -51,7 +51,7 @@ const projects = [
 ];
 
 export function ProjectPreview() {
-  const [year, setYear] = useState(new Date().getFullYear());
+  const [year, setYear] = useState<number | null>(null);
 
   useEffect(() => {
     setYear(new Date().getFullYear());
@@ -163,7 +163,7 @@ export function ProjectPreview() {
       <footer className="border-t bg-background">
         <div className="container mx-auto flex flex-col items-center justify-between gap-4 px-4 py-8 md:flex-row md:px-6">
           <p className="text-sm text-muted-foreground">
-            © {year} StudioFlow. All rights reserved.
+            © {year ?? new Date().getFullYear()} StudioFlow. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="icon">
