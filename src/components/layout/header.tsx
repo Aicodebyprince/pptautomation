@@ -43,11 +43,11 @@ export function Header({ navLinks }: HeaderProps) {
         <div className="flex justify-between items-center py-4">
           <Link href="#" className="flex items-center gap-3">
             <div className="logo-shape w-10 h-10 flex items-center justify-center bg-gradient-primary">
-              <span className="text-white font-bold text-xl">U</span>
+              <span className="text-white font-bold text-xl">A</span>
             </div>
             <span className={cn(
               "text-lg font-bold font-headline transition-colors text-primary"
-            )}>UNIVIA</span>
+            )}>ABC Company</span>
           </Link>
 
           <nav className="hidden md:flex space-x-8">

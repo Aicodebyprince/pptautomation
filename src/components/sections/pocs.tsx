@@ -13,7 +13,7 @@ export function Pocs({ data }: PocsProps) {
   return (
     <Section
       id="contact"
-      title="UNIVIA Points of Contact"
+      title="ABC Company Points of Contact"
       subtitle="Key contacts for project coordination and consultation."
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

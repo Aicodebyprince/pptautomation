@@ -28,8 +28,8 @@ export const defaultData: CMMIData = {
   evidenceTraining: 1,
   appraisalTraining: 3,
   projectManagement: 5,
-  consultants: [{ name: "John Smith", email: "john.smith@univiami.com" }],
-  projectManagers: [{ name: "Sarah Johnson", email: "sarah.johnson@univiami.com" }],
+  consultants: [{ name: "John Smith", email: "john.smith@abccompany.com" }],
+  projectManagers: [{ name: "Sarah Johnson", email: "sarah.johnson@abccompany.com" }],
 };
 
 export const practiceAreas = {

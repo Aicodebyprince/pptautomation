@@ -10,10 +10,10 @@ export function ThankYou() {
               </p>
               <div className="flex justify-center">
                 <div className="logo-shape w-20 h-20 flex items-center justify-center mx-auto bg-white/20">
-                  <span className="text-white font-bold text-2xl">U</span>
+                  <span className="text-white font-bold text-2xl">A</span>
                 </div>
               </div>
-              <p className="text-white/80 mt-8">UNIVIA Management International</p>
+              <p className="text-white/80 mt-8">ABC Company</p>
             </div>
           </div>
         </div>

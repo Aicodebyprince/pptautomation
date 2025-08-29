@@ -54,7 +54,7 @@ export const generatePptx = (data: CMMIData) => {
     const pptx = new PptxGenJS();
 
     pptx.layout = 'LAYOUT_16x9';
-    pptx.author = 'UNIVIA Management International';
+    pptx.author = 'ABC Company';
     pptx.company = data.companyName;
     pptx.title = `CMMI Implementation Kickoff: ${data.companyName}`;
 
@@ -65,7 +65,7 @@ export const generatePptx = (data: CMMIData) => {
     titleSlide.addText('CMMI Implementation Kickoff', {
         x: 0, y: 1.5, w: '100%', h: 1, align: 'center', fontSize: 44, fontFace: 'Space Grotesk', color: THEME_COLORS.WHITE, bold: true,
     });
-    titleSlide.addText('UNIVIA Management International', {
+    titleSlide.addText('ABC Company', {
         x: 0, y: 2.7, w: '100%', h: 0.5, align: 'center', fontSize: 24, fontFace: 'Inter', color: THEME_COLORS.WHITE,
     });
      titleSlide.addText('and', {

@@ -102,7 +102,7 @@ export function Approach({ data }: ApproachProps) {
             <p>Comprehensive documentation aligned with CMMI requirements.</p>
           </Step>
         </div>
-        <Note>The QMS documentation provided will not be fully customized as per the client organization processes; rather it will be a limited alignment of standard QMS documents set of UNIVIA.</Note>
+        <Note>The QMS documentation provided will not be fully customized as per the client organization processes; rather it will be a limited alignment of standard QMS documents set of ABC Company.</Note>
       </Phase>
 
       <Phase title="Phase 3 &amp; 4: RGS Documentation" icon={FileCheck2}>

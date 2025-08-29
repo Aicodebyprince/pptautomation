@@ -6,7 +6,7 @@ const agendaItems = [
   { title: "CMMI Model Scope", description: "Defining the boundaries and focus areas of our CMMI implementation, including targeted maturity levels and organizational coverage." },
   { title: "CMMI Practice Areas", description: "Exploring the key practice areas relevant to your organization's goals and how they align with your business objectives." },
   { title: "Approach", description: "Outlining our implementation methodology, timeline, and strategic roadmap for achieving CMMI compliance and certification." },
-  { title: "Roles & Responsibilities", description: "Clarifying the specific roles, responsibilities, and expectations for both UNIVIA and client teams throughout the engagement." },
+  { title: "Roles & Responsibilities", description: "Clarifying the specific roles, responsibilities, and expectations for both ABC Company and client teams throughout the engagement." },
   { title: "Key Teams to be Formed", description: "Identifying and structuring the essential teams needed to drive CMMI implementation success." },
   { title: "Critical Success Factors", description: "Highlighting the key elements and conditions necessary for a successful CMMI implementation and organizational transformation." },
   { title: "Engagement Structure", description: "Detailing the framework for collaboration, including meeting cadence, reporting structures, and governance mechanisms." },

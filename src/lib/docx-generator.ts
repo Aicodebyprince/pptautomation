@@ -150,7 +150,7 @@ export const generateDocx = async (data: CMMIData) => {
                 alignment: AlignmentType.CENTER,
                 spacing: { after: 400 },
             }),
-            createParagraph(`UNIVIA Management International`, AlignmentType.CENTER),
+            createParagraph(`ABC Company`, AlignmentType.CENTER),
             createParagraph(`and`, AlignmentType.CENTER),
             createParagraph(`${data.companyName}`, AlignmentType.CENTER),
             new Paragraph({
@@ -165,7 +165,7 @@ export const generateDocx = async (data: CMMIData) => {
 
     // Agenda
     const agendaItems = [
-      "CMMI Model Scope", "CMMI Practice Areas", "Approach", "Roles & Responsibilities", "UNIVIA Points of Contact", "Key Teams to be Formed",
+      "CMMI Model Scope", "CMMI Practice Areas", "Approach", "Roles & Responsibilities", "ABC Company Points of Contact", "Key Teams to be Formed",
       "Critical Success Factors", "Engagement Structure", "Next Steps - 30 Days Focus", "Interaction/Q and A",
     ];
     content.push(createHeading('Meeting Agenda', HeadingLevel.HEADING_1, PRIMARY_COLOR));
@@ -251,7 +251,7 @@ export const generateDocx = async (data: CMMIData) => {
     // Points of Contact
     const consultant = data.consultants[0] || { name: "N/A", email: "N/A" };
     const projectManager = data.projectManagers[0] || { name: "N/A", email: "N/A" };
-    content.push(createHeading('UNIVIA Points of Contact', HeadingLevel.HEADING_1, PRIMARY_COLOR));
+    content.push(createHeading('ABC Company Points of Contact', HeadingLevel.HEADING_1, PRIMARY_COLOR));
     content.push(createSubHeading('Consultant'));
     content.push(createParagraph([new TextRun({ text: `${consultant.name}: `, bold: true }), new TextRun({ text: consultant.email })]));
     content.push(createSubHeading('Project Manager'));
@@ -313,7 +313,7 @@ export const generateDocx = async (data: CMMIData) => {
     content.push(createParagraph(`For any further questions, please contact our lead consultant: ${consultant.name} at ${consultant.email}.`, AlignmentType.CENTER));
 
     const doc = new Document({
-        creator: 'UNIVIA Management International',
+        creator: 'ABC Company',
         title: `CMMI Implementation Kickoff: ${data.companyName}`,
         styles: {
             paragraphStyles: [{

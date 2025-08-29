@@ -46,7 +46,7 @@ export function Hero({ data }: HeroProps) {
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8 leading-tight opacity-0 animate-slide-in-up" style={{ animationDelay: '250ms' }}>CMMI Implementation Kickoff</h1>
           
           <div className="mb-10 opacity-0 animate-slide-in-up" style={{ animationDelay: '400ms' }}>
-            <h2 className="text-2xl md:text-3xl font-medium mb-4">UNIVIA Management International</h2>
+            <h2 className="text-2xl md:text-3xl font-medium mb-4">ABC Company</h2>
             <div className="flex items-center justify-center my-5">
               <div className="h-px bg-white/30 w-20"></div>
               <p className="text-xl mx-4 font-light">and</p>

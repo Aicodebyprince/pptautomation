@@ -11,9 +11,9 @@ export function Footer() {
             <div className="mb-6 md:mb-0 text-center md:text-left">
               <div className="flex items-center justify-center md:justify-start">
                 <div className="logo-shape w-10 h-10 flex items-center justify-center mr-3 bg-primary">
-                  <span className="text-white font-bold">U</span>
+                  <span className="text-white font-bold">A</span>
                 </div>
-                <span className="text-lg font-semibold font-headline">UNIVIA Management International</span>
+                <span className="text-lg font-semibold font-headline">ABC Company</span>
               </div>
               <p className="mt-4 text-primary-foreground/80 max-w-xs">Global leaders in CMMI consulting and process improvement solutions.</p>
             </div>
@@ -32,7 +32,7 @@ export function Footer() {
           </div>
           
           <div className="border-t border-primary-foreground/20 mt-8 pt-8 text-center text-primary-foreground/70 text-sm">
-            <p>&copy; {currentYear} UNIVIA Management International. All rights reserved.</p>
+            <p>&copy; {currentYear} ABC Company. All rights reserved.</p>
           </div>
         </div>
       </div>
