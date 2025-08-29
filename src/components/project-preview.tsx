@@ -1,3 +1,6 @@
+
+"use client";
+
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,6 +13,7 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Github, Linkedin, Twitter } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const projects = [
   {
@@ -47,6 +51,12 @@ const projects = [
 ];
 
 export function ProjectPreview() {
+  const [year, setYear] = useState(new Date().getFullYear());
+
+  useEffect(() => {
+    setYear(new Date().getFullYear());
+  }, []);
+
   return (
     <div className="flex flex-col">
       <main className="flex-1 overflow-y-auto">
@@ -153,7 +163,7 @@ export function ProjectPreview() {
       <footer className="border-t bg-background">
         <div className="container mx-auto flex flex-col items-center justify-between gap-4 px-4 py-8 md:flex-row md:px-6">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} StudioFlow. All rights reserved.
+            © {year} StudioFlow. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="icon">
