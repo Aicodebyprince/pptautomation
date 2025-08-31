@@ -17,6 +17,9 @@ const fontHeadline = Space_Grotesk({
 export const metadata: Metadata = {
   title: 'CMMI Navigator',
   description: 'CMMI Implementation Kickoff by ABC Company',
+  icons: {
+    icon: '/icon.png',
+  },
 };
 
 export default function RootLayout({
