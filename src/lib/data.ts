@@ -15,7 +15,7 @@ export const defaultData: CMMIData = {
   businessLine: "Software Development & IT Services",
   peopleStrength: 100,
   projectScope: 10,
-  locations: ["Mumbai, India"],
+  locations: [{ name: "Mumbai, India" }],
   projectCharter: 1,
   overviewTraining: 2,
   stakeholders: 12,

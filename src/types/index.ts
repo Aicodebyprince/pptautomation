@@ -3,6 +3,10 @@ export interface Person {
   email: string;
 }
 
+export interface Location {
+  name: string;
+}
+
 export type CMMIModel = 'Development' | 'Services' | 'Multimodel' | '';
 
 export interface CMMIData {
@@ -14,7 +18,7 @@ export interface CMMIData {
   businessLine: string;
   peopleStrength: number;
   projectScope: number;
-  locations: string[];
+  locations: Location[];
   projectCharter: number;
   overviewTraining: number;
   stakeholders: number;

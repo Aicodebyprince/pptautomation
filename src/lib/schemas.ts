@@ -5,6 +5,10 @@ const personSchema = z.object({
   email: z.string().email("Invalid email address"),
 });
 
+const locationSchema = z.object({
+  name: z.string().min(1, "Location name is required"),
+});
+
 export const cmmiFormSchema = z.object({
   companyName: z.string().min(1, "Company name is required"),
   meetingDate: z.string().min(1, "Meeting date is required"),
@@ -14,7 +18,7 @@ export const cmmiFormSchema = z.object({
   businessLine: z.string().min(1, "Line of business is required"),
   peopleStrength: z.coerce.number().min(1, "Must be at least 1"),
   projectScope: z.coerce.number().min(1, "Must be at least 1"),
-  locations: z.array(z.string()).min(1, "At least one location is required"),
+  locations: z.array(locationSchema).min(1, "At least one location is required"),
   projectCharter: z.coerce.number().min(0, "Cannot be negative"),
   overviewTraining: z.coerce.number().min(0, "Cannot be negative"),
   stakeholders: z.coerce.number().min(1, "Must be at least 1"),

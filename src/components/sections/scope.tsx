@@ -51,7 +51,8 @@ export function Scope({ data }: ScopeProps) {
         <ScopeItem 
           icon={MapPin}
           title="Locations"
-          value={data.locations.join(', ')}
+          value={data.locations.map(l => l.name).join(', ')}
+          className="sm:col-span-2 lg:col-span-3"
         />
       </div>
     </Section>

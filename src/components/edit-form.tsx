@@ -11,7 +11,6 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogClose
 } from "@/components/ui/dialog";
 import {
   Form,
@@ -32,8 +31,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/hooks/use-toast";
-import { Pencil, Plus, Trash2, X } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Pencil, Plus, Trash2 } from "lucide-react";
 import React, { useState } from "react";
 
 interface EditFormProps {
@@ -77,7 +75,7 @@ export function EditForm({ data, onUpdate }: EditFormProps) {
 
   const handleAddLocation = () => {
     if (locationInput.trim()) {
-      appendLocation(locationInput.trim());
+      appendLocation({ name: locationInput.trim() });
       setLocationInput("");
     }
   };
@@ -90,27 +88,21 @@ export function EditForm({ data, onUpdate }: EditFormProps) {
           <span className="sr-only">Edit Content</span>
         </button>
       </DialogTrigger>
-      <DialogContent className="max-w-3xl p-0">
-        <DialogHeader className="p-6 pb-0">
+      <DialogContent className="max-w-3xl">
+        <DialogHeader>
           <DialogTitle>CMMI Implementation Form</DialogTitle>
         </DialogHeader>
-        <DialogClose className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
-          <X className="h-4 w-4" />
-          <span className="sr-only">Close</span>
-        </DialogClose>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <Tabs defaultValue="basic" className="w-full">
-              <div className="px-6">
-                <TabsList className="grid w-full grid-cols-5">
-                  <TabsTrigger value="basic">Company</TabsTrigger>
-                  <TabsTrigger value="model">Model</TabsTrigger>
-                  <TabsTrigger value="business">Business</TabsTrigger>
-                  <TabsTrigger value="activities">Activities</TabsTrigger>
-                  <TabsTrigger value="personnel">Personnel</TabsTrigger>
-                </TabsList>
-              </div>
-              <ScrollArea className="h-[60vh] px-6">
+              <TabsList className="grid w-full grid-cols-5">
+                <TabsTrigger value="basic">Company</TabsTrigger>
+                <TabsTrigger value="model">Model</TabsTrigger>
+                <TabsTrigger value="business">Business</TabsTrigger>
+                <TabsTrigger value="activities">Activities</TabsTrigger>
+                <TabsTrigger value="personnel">Personnel</TabsTrigger>
+              </TabsList>
+              <ScrollArea className="h-[60vh] p-4">
                 <TabsContent value="basic" className="mt-4 space-y-4">
                   <FormField control={form.control} name="companyName" render={({ field }) => (
                     <FormItem>
@@ -198,7 +190,7 @@ export function EditForm({ data, onUpdate }: EditFormProps) {
                         <div className="flex flex-wrap gap-2 mb-2">
                         {locations.map((loc, index) => (
                             <div key={loc.id} className="flex items-center gap-2 bg-muted p-1.5 rounded-md">
-                                <Controller name={`locations.${index}`} control={form.control} render={({ field }) => <span className="text-sm">{field.value}</span>} />
+                                <Controller name={`locations.${index}.name`} control={form.control} render={({ field }) => <span className="text-sm">{field.value}</span>} />
                                 <Button type="button" variant="ghost" size="icon" className="h-6 w-6" onClick={() => removeLocation(index)}>
                                     <Trash2 className="h-4 w-4" />
                                 </Button>

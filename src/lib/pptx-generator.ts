@@ -106,7 +106,7 @@ export const generatePptx = (data: CMMIData) => {
         ['Model:', data.cmmiModel, 'Maturity Level:', data.maturityLevel],
         ['Appraisal Type:', 'Benchmark', 'Line of Business:', data.businessLine],
         ['Current Strength:', `${data.peopleStrength} people`, 'Current Scope:', `${data.projectScope} projects`],
-        ['Locations:', data.locations.join(', '), '', ''],
+        ['Locations:', data.locations.map(l => l.name).join(', '), '', ''],
     ];
     scopeSlide.addTable(scopeItems, { x: 0.5, y: 1.5, w: '90%', colW: [2, 2.5, 2, 2.5], border: { type: 'none' }, ...BODY_OPTS, fontSize: 12 });
 

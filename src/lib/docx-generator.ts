@@ -12,8 +12,6 @@ import {
   TableCell,
   WidthType,
   VerticalAlign,
-  IBorderAttributes,
-  BorderStyle,
 } from 'docx';
 import { saveAs } from 'file-saver';
 import type { CMMIData } from '@/types';
@@ -194,7 +192,7 @@ export const generateDocx = async (data: CMMIData) => {
             ]}),
              new TableRow({ children: [
                 new TableCell({ children: [createParagraph('Locations')] }),
-                new TableCell({ children: [createParagraph(data.locations.join(', '))] , columnSpan: 3}),
+                new TableCell({ children: [createParagraph(data.locations.map(l => l.name).join(', '))] , columnSpan: 3}),
             ]}),
         ],
     });
