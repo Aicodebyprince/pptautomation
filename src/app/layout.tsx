@@ -19,6 +19,8 @@ export const metadata: Metadata = {
   description: 'CMMI Implementation Kickoff by ABC Company',
   icons: {
     icon: '/icon.png',
+    shortcut: '/icon.png',
+    apple: '/icon.png',
   },
 };
 
