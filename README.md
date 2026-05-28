@@ -1,87 +1,390 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Aicodebyprince/pptautomation/main/docs/PPT1.png" width="80" height="80" alt="CMMI Navigator"/>
+</p>
 
-# 🚀 CMMI Navigator: Implementation Kickoff
+<h1 align="center">CMMI Navigator</h1>
 
-**CMMI Navigator** is a dynamic, web-based tool designed to streamline and standardize the kickoff process for CMMI (Capability Maturity Model Integration) implementation projects. This application empowers consulting firms and internal process groups to quickly generate customized, professional, and comprehensive kickoff materials for their clients or teams.
+<p align="center">
+  <strong>AI-powered CMMI implementation kickoff generator</strong>
+</p>
 
-Built with a modern tech stack, it features an interactive interface where users can input project-specific data and receive a complete, ready-to-use webpage that can also be exported to DOCX and PPTX formats.
+<p align="center">
+  <a href="#overview">Overview</a> &middot;
+  <a href="#how-it-works">How It Works</a> &middot;
+  <a href="#architecture">Architecture</a> &middot;
+  <a href="#screenshots">Screenshots</a> &middot;
+  <a href="#ai-flows">AI Flows</a> &middot;
+  <a href="#tech-stack">Tech Stack</a> &middot;
+  <a href="#quick-start">Quick Start</a>
+</p>
 
----
-
-## ✨ Key Features
-
-- **Interactive Kickoff Form**: Easily input all project parameters, from company names and maturity levels to specific man-day estimations for various activities.
-- **Dynamic Content Generation**: The entire website content updates in real-time based on the data you provide in the form.
-- **AI-Powered Suggestions**: Leverage the "Action Item Generator" to get AI-driven, context-aware suggestions for different CMMI implementation phases.
-- **Export Functionality**: Download the complete kickoff plan as a professionally formatted **Microsoft Word (DOCX)** document or a **PowerPoint (PPTX)** presentation with a single click.
-- **Responsive Design**: A beautiful and fully responsive interface built with Next.js and ShadCN UI, ensuring a seamless experience on any device.
-- **Component-Based Architecture**: Clean, reusable, and well-organized code leveraging the best practices of React and Next.js.
-
----
-
-## 🛠️ Tech Stack
-
-This project is built with a modern, robust, and scalable technology stack:
-
-- **Framework**: [Next.js](https://nextjs.org/) (React Framework)
-- **Generative AI**: [Google's Genkit](https://firebase.google.com/docs/genkit)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
-- **UI Components**: [ShadCN UI](https://ui.shadcn.com/)
-- **Icons**: [Lucide React](https://lucide.dev/)
-- **Form Management**: [React Hook Form](https://react-hook-form.com/) & [Zod](https://zod.dev/) for validation
-- **Document Generation**:
-  - `docx` for Microsoft Word files.
-  - `pptxgenjs` for PowerPoint files.
+<br/>
 
 ---
 
-## 🏁 Getting Started
+## Overview
 
-To get a local copy up and running, follow these simple steps.
+CMMI Navigator transforms how consulting firms and internal process groups initiate CMMI (Capability Maturity Model Integration) implementation projects. Instead of manually crafting kickoff decks, drafting action plans, and formatting deliverables across multiple tools, this platform generates a complete, production-ready kickoff website from a single form submission.
+
+The output is not just a static page. The same data model powers real-time DOCX and PPTX exports, AI-generated action items, and a fully interactive presentation layer that adapts to every project variable.
+
+**The problem it solves:** A standard CMMI kickoff requires 6-12 hours of manual work — writing the agenda, defining scope, allocating roles, estimating timelines, drafting communication plans, and assembling slides. This app collapses that process into a 15-minute form fill with AI-assisted content generation.
+
+<br/>
+
+### How It Works
+
+```
+User fills editable form -> Data updates in real time across 18 sections
+  -> AI generates action items per phase
+  -> Export to DOCX or PPTX with one click
+```
+
+The data model (`CMMIData`) centralizes every project parameter — company name, maturity level, man-day estimates, team structure, scope, timeline, and more. All 18 UI sections read from this single source of truth, so any form update propagates instantly to the hero, agenda, approach, roles, timeline, and download sections simultaneously.
+
+<br/>
+
+## Architecture
+
+```mermaid
+graph TB
+    subgraph "Client Layer - Next.js 14 App Router"
+        PG[page.tsx - SPA Shell]
+        HF[Header + Footer - Layout]
+        EF[EditForm - Floating Overlay]
+    end
+
+    subgraph "18 Component Sections"
+        HERO[Hero - Project Header]
+        AG[Agenda - Session Timeline]
+        SC[Scope - Engagement Boundaries]
+        PA[Practice Areas - CMMI Model]
+        AP[Approach - Implementation Plan]
+        RL[Roles - Stakeholder Map]
+        PC[POCs - Point of Contact]
+        TM[Teams - Working Groups]
+        SF[Success Factors - KPIs]
+        RP[Reporting - Cadence]
+        CM[Communication - Channels]
+        UP[Updates - Status Flow]
+        ES[Escalation - Path]
+        DL[Delays - Risk Buffer]
+        NS[Next Steps - AI Generated]
+        QA[Q&A - FAQ Section]
+        DN[Download - Export Buttons]
+        TY[Thank You - Closing]
+    end
+
+    subgraph "AI Engine - Google Genkit"
+        GI[Genkit AI Middleware]
+        GA[generate-action-items.ts]
+        GP[presentation-generator.ts]
+        GT[theme-ai-assistance.ts]
+    end
+
+    subgraph "Export Pipeline"
+        DX[docx - Word Documents]
+        PX[pptxgenjs - PowerPoint]
+    end
+
+    EF --> PG
+    PG --> HERO
+    PG --> AG
+    PG --> SC
+    PG --> PA
+    PG --> AP
+    PG --> RL
+    PG --> PC
+    PG --> TM
+    PG --> SF
+    PG --> RP
+    PG --> CM
+    PG --> UP
+    PG --> ES
+    PG --> DL
+    PG --> NS
+    PG --> QA
+    PG --> DN
+    PG --> TY
+
+    NS --> GA
+    GA --> GI
+    GI --> GT
+    GI --> GP
+    GP --> DX
+    GP --> PX
+    DN --> DX
+    DN --> PX
+```
+
+### Component Data Flow
+
+All sections are pure render components that receive typed props from the parent `CMMIData` state object. The edit form (`edit-form.tsx`) wraps this object with React Hook Form + Zod validation, and on submit, updates the parent state. This triggers a React re-render across all subscribed sections — no API calls needed for real-time preview.
+
+```
+EditForm (Zod validation) -> setData(newData) -> React re-render -> All 18 sections update
+```
+
+<br/>
+
+## AI Flows
+
+The Genkit integration provides three specialized AI pipelines:
+
+| Flow | File | Purpose | Trigger |
+|:-----|:-----|:--------|:--------|
+| **Action Item Generator** | `generate-action-items.ts` | Produces phase-specific, context-aware tasks based on project scope and maturity level | "Generate Next Steps" button |
+| **Presentation Generator** | `presentation-generator.ts` | Formats CMMI data into structured slide content for PPTX export | Export to PowerPoint |
+| **Theme AI Assistance** | `theme-ai-assistance.ts` | Evaluates user theme inputs and provides feedback based on aesthetic harmony | Theme customization |
+
+Each flow uses Google's Gemini model through the Genkit SDK, with typed input/output schemas for type-safe AI orchestration.
+
+<br/>
+
+## Screenshots
+
+Seven exported PowerPoint slides generated by the platform's PPTX export pipeline:
+
+<p align="center">
+  <table>
+    <tr>
+      <td width="33%" valign="top" align="center">
+        <strong>Slide 1</strong><br/>
+        <em>Title & Engagement Overview</em>
+        <br/><br/>
+        <img src="https://raw.githubusercontent.com/Aicodebyprince/pptautomation/main/docs/PPT1.png" width="100%" alt="Slide 1"/>
+      </td>
+      <td width="33%" valign="top" align="center">
+        <strong>Slide 2</strong><br/>
+        <em>Agenda & Timeline</em>
+        <br/><br/>
+        <img src="https://raw.githubusercontent.com/Aicodebyprince/pptautomation/main/docs/PPT2.png" width="100%" alt="Slide 2"/>
+      </td>
+      <td width="33%" valign="top" align="center">
+        <strong>Slide 3</strong><br/>
+        <em>Scope & Practice Areas</em>
+        <br/><br/>
+        <img src="https://raw.githubusercontent.com/Aicodebyprince/pptautomation/main/docs/PPT3.png" width="100%" alt="Slide 3"/>
+      </td>
+    </tr>
+    <tr>
+      <td width="33%" valign="top" align="center">
+        <strong>Slide 4</strong><br/>
+        <em>Approach & Methodology</em>
+        <br/><br/>
+        <img src="https://raw.githubusercontent.com/Aicodebyprince/pptautomation/main/docs/PPT4.png" width="100%" alt="Slide 4"/>
+      </td>
+      <td width="33%" valign="top" align="center">
+        <strong>Slide 5</strong><br/>
+        <em>Roles & Responsibilities</em>
+        <br/><br/>
+        <img src="https://raw.githubusercontent.com/Aicodebyprince/pptautomation/main/docs/PPT5.png" width="100%" alt="Slide 5"/>
+      </td>
+      <td width="33%" valign="top" align="center">
+        <strong>Slide 6</strong><br/>
+        <em>Teams & Communication</em>
+        <br/><br/>
+        <img src="https://raw.githubusercontent.com/Aicodebyprince/pptautomation/main/docs/PPT6.png" width="100%" alt="Slide 6"/>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3" align="center">
+        <strong>Slide 7</strong><br/>
+        <em>Next Steps & Action Items</em>
+        <br/><br/>
+        <img src="https://raw.githubusercontent.com/Aicodebyprince/pptautomation/main/docs/PPT7.png" width="33%" alt="Slide 7"/>
+      </td>
+    </tr>
+  </table>
+</p>
+
+These slides represent the **generated output** of the Presentation Generator AI flow, demonstrating the platform's ability to produce client-ready deliverables from structured form data.
+
+<br/>
+
+## Core Features
+
+### Dynamic Form with Real-Time Preview
+
+The floating `EditForm` component (activated by a pencil icon) provides multi-tab form access to all project parameters. Data is validated client-side via Zod schemas before updating the unified `CMMIData` state. Every field change propagates instantly across all 18 sections — the hero title, agenda dates, timeline bars, and export documents all update simultaneously.
+
+**Why this matters for consulting:** Kickoff meetings are iterative. Clients change scope mid-session. This lets consultants adjust parameters live and see the full impact across every deliverable in real time.
+
+### 18-Section Component Library
+
+The presentation layer is composed of independently renderable section components, each typed to receive specific slices of the `CMMIData` interface:
+
+| Section | Data Dependency | Visual Format |
+|:--------|:---------------|:--------------|
+| Hero | Project name, company, maturity level | Title card with metadata |
+| Agenda | Date, duration | Chronological timeline |
+| Scope | Engagement boundaries, exclusions | Scope matrix |
+| Practice Areas | CMMI model selection | Dynamic card grid |
+| Approach | Phases, activities, man-days | Gantt-style breakdown |
+| Roles | Stakeholder list | Contact cards |
+| Teams | Working group assignments | Team roster |
+| Reporting | Cadence, audience | Schedule table |
+| Next Steps | AI-generated action items | Task list with AI toggle |
+| Download | Full data model | DOCX + PPTX export buttons |
+
+### AI-Powered Action Item Generation
+
+The `generate-action-items.ts` Genkit flow takes the current project state and produces context-aware action items for each CMMI implementation phase. The AI considers:
+- Maturity level (ML2, ML3, etc.)
+- Scope boundaries
+- Practice area coverage
+- Team structure
+
+The output is a structured list of tasks with ownership and timeline estimates — not generic suggestions but specifically relevant actions based on the project's unique parameters.
+
+### Multi-Format Export Pipeline
+
+The export layer uses two dedicated libraries:
+- **docx** — Generates a professionally formatted Microsoft Word document with headers, tables, and structured content
+- **pptxgenjs** — Produces a 7+ slide PowerPoint presentation from the same data model
+
+Both exports are generated client-side — no server infrastructure required beyond the initial page load.
+
+<br/>
+
+## Tech Stack
+
+| Category | Technology | Purpose |
+|:---------|:-----------|:--------|
+| **Framework** | Next.js 14 (App Router) | React meta-framework with file-system routing |
+| **Language** | TypeScript | End-to-end type safety |
+| **AI Platform** | Google Genkit | Type-safe AI flow orchestration with Gemini |
+| **Styling** | Tailwind CSS | Utility-first responsive design |
+| **UI Components** | ShadCN UI | Accessible, customizable component primitives |
+| **Icons** | Lucide React | Consistent icon system |
+| **Form** | React Hook Form + Zod | Performant form state + schema validation |
+| **Documents** | docx | Microsoft Word generation |
+| **Presentations** | pptxgenjs | PowerPoint slide generation |
+
+<br/>
+
+## Project Structure
+
+```
+src/
+  app/
+    globals.css           Tailwind entry point
+    layout.tsx            Root layout with metadata
+    page.tsx              Main SPA - orchestrates 18 sections
+
+  ai/
+    genkit.ts             Genkit SDK configuration
+    dev.ts                Development tooling
+    flows/
+      generate-action-items.ts   AI task generation
+      presentation-generator.ts  Slide content generation
+      theme-ai-assistance.ts     Theme evaluation
+
+  components/
+    edit-form.tsx          Floating form overlay
+    layout/
+      header.tsx           Navigation header with scroll links
+      footer.tsx           Page footer
+    sections/
+      hero.tsx             Title card
+      agenda.tsx           Timeline
+      scope.tsx            Engagement boundaries
+      practice-areas.tsx   CMMI model grid
+      approach.tsx         Implementation plan
+      roles.tsx            Stakeholder map
+      pocs.tsx             Point of contact cards
+      teams.tsx            Working groups
+      success-factors.tsx  KPIs
+      reporting.tsx        Report schedule
+      communication.tsx    Channel plan
+      updates.tsx          Status flow
+      escalation.tsx       Escalation path
+      delays.tsx           Risk buffer
+      next-steps.tsx       AI-generated tasks
+      qa.tsx               FAQ
+      download.tsx         Export buttons (DOCX + PPTX)
+      thank-you.tsx        Closing section
+    ui/                   ShadCN UI primitives
+
+  hooks/                   Custom React hooks
+  lib/
+    data.ts               Default CMMIData + generation logic
+    docx-export.ts        Word document generation
+    pptx-export.ts        PowerPoint generation
+
+  types/
+    index.ts              CMMIData interface + type definitions
+
+docs/
+  PPT1.png through PPT7.png     Sample export slides
+```
+
+<br/>
+
+## Quick Start
 
 ### Prerequisites
 
-- Node.js (v18 or newer recommended)
-- npm or yarn
+- Node.js 18+
+- A Google AI API key (Gemini)
 
-### Installation
+### Setup
 
-1.  **Clone the repository:**
-    ```bash
-    git clone https://github.com/your-username/your-repo-name.git
-    cd your-repo-name
-    ```
+```bash
+# 1. Clone
+git clone https://github.com/Aicodebyprince/pptautomation.git
+cd pptaautomation
 
-2.  **Install NPM packages:**
-    ```bash
-    npm install
-    ```
+# 2. Install
+npm install
 
-3.  **Set up environment variables:**
-    Create a `.env` file in the root of your project and add your Google AI API key:
-    ```
-    GEMINI_API_KEY=your_api_key_here
-    ```
+# 3. Set environment
+echo "GEMINI_API_KEY=your_key_here" > .env
 
-4.  **Run the development server:**
-    ```bash
-    npm run dev
-    ```
+# 4. Start development server
+npm run dev
+```
 
-Open [http://localhost:9002](http://localhost:9002) with your browser to see the result.
+Open `http://localhost:9002` in your browser.
+
+### Usage
+
+1. Click the **pencil icon** (floating bottom-right) to open the EditForm
+2. Fill in project details across the form tabs
+3. Click **Update Website** to apply changes to all 18 sections
+4. In the **Next Steps** section, use the AI generator to create action items
+5. Use the **Download** section to export DOCX or PPTX files
+
+<br/>
+
+## Roadmap
+
+- Multi-language slide generation
+- Custom branding/theme persistence
+- Team collaboration with shared state
+- Direct PowerPoint export with template selection
+- CMMI Level 4 and 5 assessment support
+- PDF export for print-ready deliverables
+
+<br/>
 
 ---
 
-## Usage
+<p align="center">
+  <strong>Built by <a href="https://github.com/Aicodebyprince">Prince Sherathiya</a></strong>
+</p>
 
-1.  **Launch the Application**: Open the web application in your browser.
-2.  **Open the Edit Form**: Click the pencil icon floating at the bottom-right of the screen.
-3.  **Fill in the Details**: Complete the form with your client's and project's information across the different tabs.
-4.  **Update Content**: Click "Update Website" to see your changes reflected instantly across the entire page.
-5.  **Generate AI Action Items**: In the "Next Steps" section, use the AI Action Item Generator to create tailored tasks for the initial project phase.
-6.  **Download Documents**: Use the buttons in the "Download" section to export the entire plan as a DOCX or PPTX file.
+<p align="center">
+  <code>Next.js</code> + <code>Genkit</code> + <code>Tailwind</code> + <code>ShadCN</code>
+</p>
 
----
+<p align="center">
+  <em>
+    CMMI implementation consulting &middot; AI-assisted process automation &middot;
+    <a href="https://github.com/Aicodebyprince">GitHub</a>
+  </em>
+</p>
 
-## License
-
-This project is licensed under the MIT License - see the `LICENSE` file for details.
+<p align="center">
+  <small>MIT License &middot; 2026</small>
+</p>
