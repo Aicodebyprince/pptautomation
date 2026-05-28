@@ -1,6 +1,4 @@
-<p align="center">
-  <img src="https://raw.githubusercontent.com/Aicodebyprince/pptautomation/main/docs/PPT1.png" width="80" height="80" alt="CMMI Navigator"/>
-</p>
+
 
 <h1 align="center">CMMI Navigator</h1>
 
